@@ -21,7 +21,32 @@ const Weather = () => {
           src={Search}
           height={40}
           width={40}
-       alt="Search Icon"/>
+          alt="Search Icon" />
+      </div>
+      <Image src={Sunny} alt='Sunny icon' className='weather-icon' />
+      <p className='temperature'>16°C</p>
+      <p className='location'>London</p>
+      <div className='weather-data'>
+        <div className='col'>
+          <Image src={Humid}
+            width={26}
+            margin-top={10} 
+            alt='Humid icon' />
+          <div>
+            <p>91%</p>
+            <span>Humidity</span>
+          </div>
+        </div>
+        <div className='col'>
+          <Image src={Wind} 
+          width={26}
+          margin-top={10}
+          alt='Wind icon' />
+          <div>
+            <p>3.6 Kmph</p>
+            <span>Wind Speed</span>
+          </div>
+        </div>
       </div>
     </div>
   )
