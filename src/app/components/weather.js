@@ -1,4 +1,6 @@
-import React from 'react';
+"use client"
+
+import React, { useEffect, useState } from 'react';
 import './weather.css'
 import Search from '../../assets/search.png';
 
@@ -13,6 +15,26 @@ import Wind from '../../assets/wind.png';
 import Image from 'next/image';
 
 const Weather = () => {
+
+  const [weatherData, setWeatherData] = useState("false");
+
+  async function search(city) {
+    try {
+      const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${process.env.NEXT_PUBLIC_REACT_APP_API_KEY}`;
+
+      const response = await fetch(url);
+      const data = await response.json();
+      console.log(data);
+      
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    search("London");
+  }, [])
+
   return (
     <div className='weather'>
       <div className='search-bar'>
@@ -27,10 +49,10 @@ const Weather = () => {
       <p className='temperature'>16°C</p>
       <p className='location'>London</p>
       <div className='weather-data'>
-        <div className='col'>
+        <div className='col' style={{ marginRight: "80px" }}>
           <Image src={Humid}
             width={26}
-            margin-top={10} 
+            margin-top={10}
             alt='Humid icon' />
           <div>
             <p>91%</p>
@@ -38,10 +60,11 @@ const Weather = () => {
           </div>
         </div>
         <div className='col'>
-          <Image src={Wind} 
-          width={26}
-          margin-top={10}
-          alt='Wind icon' />
+          <Image src={Wind}
+            width={26}
+            margin-top={10}
+            padding={20}
+            alt='Wind icon' />
           <div>
             <p>3.6 Kmph</p>
             <span>Wind Speed</span>
