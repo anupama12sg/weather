@@ -21,7 +21,7 @@ const Weather = () => {
           src={Search}
           height={40}
           width={40}
-       alt="Search Icon"/>
+       alt="Search Image"/>
       </div>
     </div>
   )
