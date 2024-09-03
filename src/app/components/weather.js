@@ -16,16 +16,21 @@ import Image from 'next/image';
 
 const Weather = () => {
 
-  const [weatherData, setWeatherData] = useState("false");
+
+  const [weatherData, setWeatherData] = useState(false);
 
   async function search(city) {
     try {
-      const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${process.env.NEXT_PUBLIC_REACT_APP_API_KEY}`;
+      const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${process.env.NEXT_PUBLIC_REACT_APP_API_KEY}`;
 
       const response = await fetch(url);
       const data = await response.json();
       console.log(data);
-      
+      setWeatherData({
+        humidity: data.main.humidity,
+        windSpeed: data.wind.speed,
+        temperature: data.main.temperature
+      })
     } catch (error) {
       console.log(error);
     }
