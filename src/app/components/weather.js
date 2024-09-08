@@ -19,6 +19,23 @@ const Weather = () => {
 
   const [weatherData, setWeatherData] = useState(false);
 
+  const allIcons = {
+    "01d": Sunny,
+    "01n": Sunny,
+    "02d": Cloudy,
+    "02n": Cloudy,
+    "03d": Drizzle,
+    "03n": Drizzle,
+    "04d": Humid,
+    "04n": Humid,
+    "09n": Overshadow,
+    "09d": Overshadow,
+    "10d": Rain,
+    "10n": Rain,
+    "13d": Snow,
+    "13n": Snow
+  }
+
   async function search(city) {
     try {
       const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${process.env.NEXT_PUBLIC_REACT_APP_API_KEY}`;
@@ -26,10 +43,13 @@ const Weather = () => {
       const response = await fetch(url);
       const data = await response.json();
       console.log(data);
+      const icon = allIcons[data.weather[0].icon] || Sunny;
       setWeatherData({
         humidity: data.main.humidity,
         windSpeed: data.wind.speed,
-        temperature: data.main.temperature
+        temperature: Math.floor(data.main.temp),
+        location: data.name,
+        icon: icon
       })
     } catch (error) {
       console.log(error);
@@ -37,7 +57,7 @@ const Weather = () => {
   }
 
   useEffect(() => {
-    search("London");
+    search("Mumbai");
   }, [])
 
   return (
@@ -51,8 +71,8 @@ const Weather = () => {
           alt="Search Icon" />
       </div>
       <Image src={Sunny} alt='Sunny icon' className='weather-icon' />
-      <p className='temperature'>16°C</p>
-      <p className='location'>London</p>
+      <p className='temperature'>{weatherData.temperature}°C</p>
+      <p className='location'>{weatherData.location}</p>
       <div className='weather-data'>
         <div className='col' style={{ marginRight: "80px" }}>
           <Image src={Humid}
@@ -60,7 +80,7 @@ const Weather = () => {
             margin-top={10}
             alt='Humid icon' />
           <div>
-            <p>91%</p>
+            <p>{weatherData.humidity}%</p>
             <span>Humidity</span>
           </div>
         </div>
@@ -71,7 +91,7 @@ const Weather = () => {
             padding={20}
             alt='Wind icon' />
           <div>
-            <p>3.6 Kmph</p>
+            <p>{weatherData.windSpeed} Kmph</p>
             <span>Wind Speed</span>
           </div>
         </div>
