@@ -46,6 +46,12 @@ const Weather = () => {
 
       const response = await fetch(url);
       const data = await response.json();
+
+      if (!response.ok) {
+        alert(data.message);
+        return;
+      }
+
       console.log(data);
       const icon = allIcons[data.weather[0].icon] || Sunny;
       setWeatherData({
@@ -56,12 +62,13 @@ const Weather = () => {
         icon: icon
       })
     } catch (error) {
-      console.log(error);
+      setWeatherData(false);
+      console.error("Error in fetching weather data");
     }
   }
 
   useEffect(() => {
-    search("Alaska");
+    search("");
   }, [])
 
   return (
@@ -75,32 +82,35 @@ const Weather = () => {
           alt="Search Icon"
           onClick={() => search(inputRef.current.value)} />
       </div>
-      <Image src={weatherData.icon} alt='Sunny icon' className='weather-icon' />
-      <p className='temperature'>{weatherData.temperature}°C</p>
-      <p className='location'>{weatherData.location}</p>
-      <div className='weather-data'>
-        <div className='col' style={{ marginRight: "80px" }}>
-          <Image src={Humid}
-            width={26}
-            margin-top={10}
-            alt='Humid icon' />
-          <div>
-            <p>{weatherData.humidity}%</p>
-            <span>Humidity</span>
+      {weatherData ? <>
+        <Image src={weatherData.icon} alt='Sunny icon' className='weather-icon' />
+        <p className='temperature'>{weatherData.temperature}°C</p>
+        <p className='location'>{weatherData.location}</p>
+        <div className='weather-data'>
+          <div className='col' style={{ marginRight: "80px" }}>
+            <Image src={Humid}
+              width={26}
+              margin-top={10}
+              alt='Humid icon' />
+            <div>
+              <p>{weatherData.humidity}%</p>
+              <span>Humidity</span>
+            </div>
+          </div>
+          <div className='col'>
+            <Image src={Wind}
+              width={26}
+              margin-top={10}
+              padding={20}
+              alt='Wind icon' />
+            <div>
+              <p>{weatherData.windSpeed} Kmph</p>
+              <span>Wind Speed</span>
+            </div>
           </div>
         </div>
-        <div className='col'>
-          <Image src={Wind}
-            width={26}
-            margin-top={10}
-            padding={20}
-            alt='Wind icon' />
-          <div>
-            <p>{weatherData.windSpeed} Kmph</p>
-            <span>Wind Speed</span>
-          </div>
-        </div>
-      </div>
+      </> : <></>}
+
     </div>
   )
 }
