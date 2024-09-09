@@ -37,6 +37,10 @@ const Weather = () => {
   }
 
   async function search(city) {
+    if (city === "") {
+      alert("Enter city name");
+      return;
+    }
     try {
       const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${process.env.NEXT_PUBLIC_REACT_APP_API_KEY}`;
 
