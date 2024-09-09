@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import './weather.css'
 import Search from '../../assets/search.png';
 
@@ -16,7 +16,7 @@ import Image from 'next/image';
 
 const Weather = () => {
 
-
+  const inputRef = useRef()
   const [weatherData, setWeatherData] = useState(false);
 
   const allIcons = {
@@ -57,20 +57,21 @@ const Weather = () => {
   }
 
   useEffect(() => {
-    search("Mumbai");
+    search("Alaska");
   }, [])
 
   return (
     <div className='weather'>
       <div className='search-bar'>
-        <input type='text' placeholder='Search' />
+        <input ref={inputRef} type='text' placeholder='Search' />
         <Image
           src={Search}
           height={40}
           width={40}
-          alt="Search Icon" />
+          alt="Search Icon"
+          onClick={() => search(inputRef.current.value)} />
       </div>
-      <Image src={Sunny} alt='Sunny icon' className='weather-icon' />
+      <Image src={weatherData.icon} alt='Sunny icon' className='weather-icon' />
       <p className='temperature'>{weatherData.temperature}°C</p>
       <p className='location'>{weatherData.location}</p>
       <div className='weather-data'>
